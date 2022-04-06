@@ -55,7 +55,7 @@ jobs:
       - name: Docker GitHub Packages login
         if: steps.check_status.outputs.result == 'outdated'
         # TODO: Change this back DOCKER_DEPLOYER to GITHUB_TOKEN and ghcr.io to docker.pkg.github.com
-        run: echo ${{ secrets.DOCKER_DEPLOYER }} | docker login --username ${{ github.actor }} --password-stdin ghcr.io
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login --username ${{ github.actor }} --password-stdin ghcr.io
       
       - name: Build image (push)
         if: steps.check_status.outputs.result == 'outdated'
