@@ -57,11 +57,6 @@ jobs:
         # TODO: Change this back DOCKER_DEPLOYER to GITHUB_TOKEN and ghcr.io to docker.pkg.github.com
         run: echo ${{ secrets.DOCKER_DEPLOYER }} | docker login --username ${{ github.actor }} --password-stdin ghcr.io
       
-      - name: Docker Hub login
-        if: steps.check_status.outputs.result == 'outdated'
-        # TODO: Change login from eskimoe back to nextoolsbot
-        run: echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login --username eskimoe --password-stdin
-
       - name: Build image (push)
         if: steps.check_status.outputs.result == 'outdated'
         id: build
@@ -89,7 +84,6 @@ jobs:
 
       - name: Git pull
         if: steps.check_status.outputs.result == 'outdated'
-        #TODO: Chang ethis from main back to master
         run: git pull origin main
 
       - name: Update readme
@@ -108,7 +102,6 @@ jobs:
 
       - name: Git push
         if: steps.check_status.outputs.result == 'outdated'
-        #TODO: Chang ethis from main back to master
         run: git push --force --tags origin main
 
 

@@ -2,11 +2,7 @@
 
 CURRENT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-# TODO: reverse comments
-# IMAGE_NAME="docker.pkg.github.com/nextools/images/chromium:rc"
 IMAGE_NAME="ghcr.io/shenato/docker-browser/chromium:rc"
-# DOCKER_NAMESPACE="nextools"
-DOCKER_NAMESPACE="eskimoe"
 
 get-version:
 	@docker pull ubuntu:bionic > /dev/null 2>&1
@@ -22,7 +18,6 @@ test:
 	@docker run --detach --publish 9222:9222 --name chromium $(IMAGE_NAME)
 	@timeout 20s sh -c "trap 'docker container rm --force chromium' 0; until curl http://localhost:9222/json/version; do sleep 1; done"
 
-# TODO: Change ghcr.io/shenato/docker-browser/chromium to docker.pkg.github.com/nextools/images/chromium:$$tag;
 tags:
 	@for i in 3 2 1 0 -1; do \
 		if [ $$i -ge 0 ]; then \
@@ -32,6 +27,5 @@ tags:
 		fi; \
 		echo $$tag; \
 		docker buildx imagetools create $(IMAGE_NAME) --tag ghcr.io/shenato/docker-browser/chromium:$$tag; \
-		docker buildx imagetools create $(IMAGE_NAME) --tag ${DOCKER_NAMESPACE}/chromium:$$tag; \
 		git tag --force chromium@$$tag; \
 	done
