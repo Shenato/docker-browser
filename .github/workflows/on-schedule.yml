@@ -1,16 +1,12 @@
 name: Check for updates
 
-# TODO: change on back to this:
-# on:
-#   repository_dispatch:
-#     types: check
-#   schedule:
-#     # every 12 hours
-#     - cron:  '0 */12 * * *'
-    
-on: [push]
+on:
+  repository_dispatch:
+    types: check
+  schedule:
+    # every 12 hours
+    - cron:  '0 */12 * * *'
 
-    
 env:
   DOCKER_DEFAULT_PLATFORM: linux/amd64
 
@@ -103,14 +99,4 @@ jobs:
       - name: Git push
         if: steps.check_status.outputs.result == 'outdated'
         run: git push --force --tags origin main
-
-
-
-      # - name: Docker GitHub Packages push
-      #   if: steps.check_status.outputs.result == 'outdated'
-      #   run: docker push docker.pkg.github.com/nextools/images/${{ matrix.package }}
-
-
-      # - name: Docker Hub push
-      #   if: steps.check_status.outputs.result == 'outdated'
-      #   run: docker push nextools/${{ matrix.package }}
+        
